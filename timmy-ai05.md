@@ -8,39 +8,41 @@
 
 ## Table of Contents
 
-1. [1. Overview & Architecture](#1-overview--architecture)
-2. [2. Physical Machine Keypad Setup](#2-physical-machine-keypad-setup)
-3. [3. HTTP Protocol & Payload Schemas](#3-http-protocol--payload-schemas)
-   * 3.1 [Device Registration & Heartbeat (`cmd: reg`)](#31-device-registration--heartbeat-cmd-reg)
-   * 3.2 [Real-Time Attendance Punch (`cmd: sendlog`)](#32-real-time-attendance-punch-cmd-sendlog)
-   * 3.3 [Biometric User Sync (`cmd: senduser`)](#33-biometric-user-sync-cmd-senduser)
-4. [4. Verification Mode & Direction Enums](#4-verification-mode--direction-enums)
-5. [5. Multi-Language Code Implementations](#5-multi-language-code-implementations)
-   * 5.1 [Raw PHP / Any PHP Framework (Laravel/CodeIgniter/Symfony)](#51-raw-php--any-php-framework)
-   * 5.2 [Node.js (Express.js)](#52-nodejs-expressjs)
-   * 5.3 [Python (FastAPI / Flask)](#53-python-fastapi--flask)
-   * 5.4 [Go (Gin Framework)](#54-go-gin-framework)
-6. [6. Universal Database Schema & Duplicate Protection](#6-universal-database-schema--duplicate-protection)
-7. [7. Security & Heartbeat Optimization](#7-security--heartbeat-optimization)
-8. [8. cURL Testing & Verification](#8-curl-testing--verification)
+1. [Overview & Architecture](#overview--architecture)
+2. [Physical Machine Keypad Setup](#physical-machine-keypad-setup)
+3. [HTTP Protocol & Payload Schemas](#http-protocol--payload-schemas)
+   * [Device Registration & Heartbeat (cmd: reg)](#device-registration--heartbeat-cmd-reg)
+   * [Real-Time Attendance Punch (cmd: sendlog)](#real-time-attendance-punch-cmd-sendlog)
+   * [Biometric User Sync (cmd: senduser)](#biometric-user-sync-cmd-senduser)
+4. [Verification Mode & Direction Enums](#verification-mode--direction-enums)
+5. [Multi-Language Code Implementations](#multi-language-code-implementations)
+   * [Raw PHP / Any PHP Framework (Laravel/CodeIgniter/Symfony)](#raw-php--any-php-framework)
+   * [Node.js (Express.js)](#nodejs-expressjs)
+   * [Python (FastAPI / Flask)](#python-fastapi--flask)
+   * [Go (Gin Framework)](#go-gin-framework)
+6. [Universal Database Schema & Duplicate Protection](#universal-database-schema--duplicate-protection)
+7. [Security & Heartbeat Optimization](#security--heartbeat-optimization)
+8. [cURL Testing & Verification](#curl-testing--verification)
 
 ---
 
-## 1. Overview & Architecture
+## Overview & Architecture
 
-TIMMY AI05 / AiFace biometric machines communicate directly over standard **HTTP / HTTPS POST** requests using JSON payloads. This eliminates the need for complex background socket servers, proprietary SDK DLLs, or vendor lock-in.
+TIMMY AI05 / AiFace biometric machines communicate directly over standard **HTTP / HTTPS POST** requests using JSON payloads. This eliminates the need for complex background socket servers, proprietar[...] 
+
+> Sample device serial number used in examples: **AXSC19024286** — replace with your device's SN. In the examples below we use the placeholder `<DEVICE_SN>` to avoid repeating the literal SN multiple times.
 
 ```
-┌─────────────────────────────────┐      Direct HTTP POST (Port 80/443)     ┌───────────────────────────────────┐
+┌─────────────────────────────────┐      Direct HTTP POST (Port 80/443)     ┌─────────────────[...]
 │   TIMMY AI05 Physical Device    │ ──────────────────────────────────────> │  Your Web Server / REST API       │
 │   (Model: AiFace / AI05)        │                                         │  (Node / Laravel / Python / Go)   │
-│   SN: AXSC19024286              │ <────────────────────────────────────── │                                   │
-└─────────────────────────────────┘        JSON Acknowledgement             └───────────────────────────────────┘
+│   SN: <DEVICE_SN>               │ <────────────────────────────────────── │                                   │
+└─────────────────────────────────┘        JSON Acknowledgement             └─────────────────[...]
 ```
 
 ---
 
-## 2. Physical Machine Keypad Setup
+## Physical Machine Keypad Setup
 
 Configure the TIMMY AI05 keypad settings:
 
@@ -52,9 +54,9 @@ Configure the TIMMY AI05 keypad settings:
 
 ---
 
-## 3. HTTP Protocol & Payload Schemas
+## HTTP Protocol & Payload Schemas
 
-### 3.1 Device Registration & Heartbeat (`cmd: reg`)
+### Device Registration & Heartbeat (cmd: reg)
 
 Sent by the machine upon boot and periodically to check server availability.
 
@@ -62,7 +64,7 @@ Sent by the machine upon boot and periodically to check server availability.
   ```json
   {
     "cmd": "reg",
-    "sn": "AXSC19024286",
+    "sn": "<DEVICE_SN>",
     "devinfo": {
       "modelname": "AiFace/TIMMY AI05",
       "firmware": "ai806_fp50h_v4.57",
@@ -89,7 +91,7 @@ Sent by the machine upon boot and periodically to check server availability.
 
 ---
 
-### 3.2 Real-Time Attendance Punch (`cmd: sendlog`)
+### Real-Time Attendance Punch (cmd: sendlog)
 
 Sent immediately when an employee scans their Face, Fingerprint, Password, or Card.
 
@@ -97,7 +99,7 @@ Sent immediately when an employee scans their Face, Fingerprint, Password, or Ca
   ```json
   {
     "cmd": "sendlog",
-    "sn": "AXSC19024286",
+    "sn": "<DEVICE_SN>",
     "count": 1,
     "logindex": 104,
     "record": [
@@ -127,7 +129,7 @@ Sent immediately when an employee scans their Face, Fingerprint, Password, or Ca
 
 ---
 
-### 3.3 Biometric User Sync (`cmd: senduser`)
+### Biometric User Sync (cmd: senduser)
 
 Sent when new user templates are added or updated on the machine.
 
@@ -135,7 +137,7 @@ Sent when new user templates are added or updated on the machine.
   ```json
   {
     "cmd": "senduser",
-    "sn": "AXSC19024286",
+    "sn": "<DEVICE_SN>",
     "enrollid": 101072,
     "name": "Tanzil"
   }
@@ -147,13 +149,13 @@ Sent when new user templates are added or updated on the machine.
     "ret": "senduser",
     "result": true,
     "enrollid": 101072,
-    "sn": "AXSC19024286"
+    "sn": "<DEVICE_SN>"
   }
   ```
 
 ---
 
-## 4. 🏷️ Verification Mode & Direction Enums
+## Verification Mode & Direction Enums
 
 ### Verification Mode (`mode`):
 | Code | Verification Method |
@@ -173,9 +175,9 @@ Sent when new user templates are added or updated on the machine.
 
 ---
 
-## 5. 💻 Multi-Language Code Implementations
+## Multi-Language Code Implementations
 
-### 5.1 Raw PHP / Any PHP Framework
+### Raw PHP / Any PHP Framework
 
 ```php
 <?php
@@ -192,7 +194,7 @@ if (!is_array($data)) {
 }
 
 $cmd = $data['cmd'] ?? '';
-$sn  = $data['sn'] ?? 'TIMMY_AI05';
+$sn  = $data['sn'] ?? '<DEVICE_SN>';
 
 // 1. Heartbeat / Handshake
 if ($cmd === 'reg') {
@@ -238,7 +240,7 @@ echo json_encode(['ret' => !empty($cmd) ? $cmd : 'ack', 'result' => true]);
 
 ---
 
-### 5.2 Node.js (Express.js)
+### Node.js (Express.js)
 
 ```javascript
 const express = require('express');
@@ -283,7 +285,7 @@ app.listen(3000, () => console.log('TIMMY Receiver running on port 3000'));
 
 ---
 
-### 5.3 Python (FastAPI / Flask)
+### Python (FastAPI / Flask)
 
 ```python
 from fastapi import FastAPI, Request
@@ -294,7 +296,7 @@ app = FastAPI()
 async def receive_attendance(request: Request):
     data = await request.json()
     cmd = data.get("cmd", "")
-    sn = data.get("sn", "TIMMY_AI05")
+    sn = data.get("sn", "<DEVICE_SN>")
 
     if cmd == "reg":
         return {
@@ -329,7 +331,7 @@ async def receive_attendance(request: Request):
 
 ---
 
-### 5.4 Go (Gin Framework)
+### Go (Gin Framework)
 
 ```go
 package main
@@ -401,7 +403,7 @@ func main() {
 
 ---
 
-## 6. 🗄️ Universal Database Schema & Duplicate Protection
+## Universal Database Schema & Duplicate Protection
 
 To guarantee zero duplicate attendance entries during network retry attempts, define a **Composite Unique Key** on `(enroll_id, punch_time)`.
 
@@ -409,7 +411,7 @@ To guarantee zero duplicate attendance entries during network retry attempts, de
 ```sql
 CREATE TABLE IF NOT EXISTS `attendance_logs` (
   `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  `device_sn` VARCHAR(64) NOT NULL DEFAULT 'TIMMY_AI05',
+  `device_sn` VARCHAR(64) NOT NULL DEFAULT '<DEVICE_SN>',
   `enroll_id` VARCHAR(64) NOT NULL,
   `punch_time` DATETIME NOT NULL,
   `verify_mode` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '1=Fingerprint, 2=Password, 3=Card, 8=Face',
@@ -422,7 +424,7 @@ CREATE TABLE IF NOT EXISTS `attendance_logs` (
 
 ---
 
-## 7. 🛡️ Security & Heartbeat Optimization
+## Security & Heartbeat Optimization
 
 1. **Heartbeat Efficiency:**  
    `cmd: reg` and `cmd: checklive` requests are handshakes. Return immediate JSON acknowledgements without making database queries to preserve database CPU cycles.
@@ -433,7 +435,7 @@ CREATE TABLE IF NOT EXISTS `attendance_logs` (
 
 ---
 
-## 8. 🧪 cURL Testing & Verification
+## cURL Testing & Verification
 
 Simulate a TIMMY AI05 attendance punch from terminal:
 
@@ -442,7 +444,7 @@ curl -X POST "http://localhost/api/attendance" \
   -H "Content-Type: application/json" \
   -d '{
     "cmd": "sendlog",
-    "sn": "AXSC19024286",
+    "sn": "<DEVICE_SN>",
     "count": 1,
     "logindex": 100,
     "record": [
