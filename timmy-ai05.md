@@ -48,7 +48,7 @@ Configure the TIMMY AI05 keypad settings:
 2. **Server Mode:** Set to `HTTP` or `HTTP POST`
 3. **Server Domain / IP:** Enter your server domain or IP *(e.g., `domain.com` or `103.84.21.81`)*
 4. **Server Port:** `80` (for HTTP) or `443` (for HTTPS)
-5. **Target Path:** Leave Empty (`/`) OR set to your API path *(e.g., `/pub/api`)*
+5. **Target Path:** set to your API path *(`/pub/api`)*
 
 ---
 
