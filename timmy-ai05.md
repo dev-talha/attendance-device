@@ -1,4 +1,4 @@
-# 📟 TIMMY AI05 / AiFace Biometric Hardware Universal HTTP Integration Guide
+# TIMMY AI05 / AiFace Biometric Hardware Universal HTTP Integration Guide
 
 > **Framework-Agnostic Developer Integration Guide & Protocol Reference**  
 > **Target Hardware:** TIMMY AI05, AiFace, and Compatible Biometric JSON Push Terminals  
@@ -6,27 +6,27 @@
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-1. [🌐 1. Overview & Architecture](#1-overview--architecture)
-2. [⚙️ 2. Physical Machine Keypad Setup](#2-physical-machine-keypad-setup)
-3. [📡 3. HTTP Protocol & Payload Schemas](#3-http-protocol--payload-schemas)
+1. [1. Overview & Architecture](#1-overview--architecture)
+2. [2. Physical Machine Keypad Setup](#2-physical-machine-keypad-setup)
+3. [3. HTTP Protocol & Payload Schemas](#3-http-protocol--payload-schemas)
    * 3.1 [Device Registration & Heartbeat (`cmd: reg`)](#31-device-registration--heartbeat-cmd-reg)
    * 3.2 [Real-Time Attendance Punch (`cmd: sendlog`)](#32-real-time-attendance-punch-cmd-sendlog)
    * 3.3 [Biometric User Sync (`cmd: senduser`)](#33-biometric-user-sync-cmd-senduser)
-4. [🏷️ 4. Verification Mode & Direction Enums](#4-verification-mode--direction-enums)
-5. [💻 5. Multi-Language Code Implementations](#5-multi-language-code-implementations)
+4. [4. Verification Mode & Direction Enums](#4-verification-mode--direction-enums)
+5. [5. Multi-Language Code Implementations](#5-multi-language-code-implementations)
    * 5.1 [Raw PHP / Any PHP Framework (Laravel/CodeIgniter/Symfony)](#51-raw-php--any-php-framework)
    * 5.2 [Node.js (Express.js)](#52-nodejs-expressjs)
    * 5.3 [Python (FastAPI / Flask)](#53-python-fastapi--flask)
    * 5.4 [Go (Gin Framework)](#54-go-gin-framework)
-6. [🗄️ 6. Universal Database Schema & Duplicate Protection](#6-universal-database-schema--duplicate-protection)
-7. [🛡️ 7. Security & Heartbeat Optimization](#7-security--heartbeat-optimization)
-8. [🧪 8. cURL Testing & Verification](#8-curl-testing--verification)
+6. [6. Universal Database Schema & Duplicate Protection](#6-universal-database-schema--duplicate-protection)
+7. [7. Security & Heartbeat Optimization](#7-security--heartbeat-optimization)
+8. [8. cURL Testing & Verification](#8-curl-testing--verification)
 
 ---
 
-## 1. 🌐 Overview & Architecture
+## 1. Overview & Architecture
 
 TIMMY AI05 / AiFace biometric machines communicate directly over standard **HTTP / HTTPS POST** requests using JSON payloads. This eliminates the need for complex background socket servers, proprietary SDK DLLs, or vendor lock-in.
 
@@ -40,7 +40,7 @@ TIMMY AI05 / AiFace biometric machines communicate directly over standard **HTTP
 
 ---
 
-## 2. ⚙️ Physical Machine Keypad Setup
+## 2. Physical Machine Keypad Setup
 
 Configure the TIMMY AI05 keypad settings:
 
@@ -52,7 +52,7 @@ Configure the TIMMY AI05 keypad settings:
 
 ---
 
-## 3. 📡 HTTP Protocol & Payload Schemas
+## 3. HTTP Protocol & Payload Schemas
 
 ### 3.1 Device Registration & Heartbeat (`cmd: reg`)
 
@@ -123,7 +123,7 @@ Sent immediately when an employee scans their Face, Fingerprint, Password, or Ca
     "mark": true
   }
   ```
-  > ⚠️ **CRITICAL:** Returning `"mark": true` and `"result": true` notifies the hardware that the log was successfully recorded. If omitted, the device will re-send the log repeatedly.
+  > **CRITICAL:** Returning `"mark": true` and `"result": true` notifies the hardware that the log was successfully recorded. If omitted, the device will re-send the log repeatedly.
 
 ---
 
